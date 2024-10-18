@@ -23,3 +23,10 @@ export type LoginValues = z.infer<typeof loginSchema>;
 export const createPostSchema = z.object({
   content: requiredString,
 })
+
+export const updateUserProfileSchema = z.object({
+  displayName: requiredString,
+  bio: z.string().max(1000, "Պետք է լինի առավելագույնը 1000 նիշ")
+})
+
+export type updateUserProfileValues = z.infer<typeof updateUserProfileSchema>;
