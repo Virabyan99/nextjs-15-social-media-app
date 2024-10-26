@@ -49,7 +49,7 @@ export function getPostDataInclude(loggedInUserId: string) {
   },
   select: {
       userId: true
-  }
+  },
   },
   _count: {
       select: {

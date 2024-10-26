@@ -1,16 +1,17 @@
 "use client";
 
-import { PostData } from "@/lib/types";
-import Link from "next/link";
-import UserAvatar from "../UserAvatar";
-import { cn, formatRelativeDate } from "@/lib/utils";
 import { useSession } from "@/app/(main)/SessionProvider";
-import PostMoreButton from "./PostMoreButton";
-import Linkify from "../Linkify";
-import UserTooltip from "../UserTooltip";
+import { PostData } from "@/lib/types";
+import { cn, formatRelativeDate } from "@/lib/utils";
 import { Media } from "@prisma/client";
 import Image from "next/image";
+import Link from "next/link";
+import Linkify from "../Linkify";
+import UserAvatar from "../UserAvatar";
+import UserTooltip from "../UserTooltip";
+import BookmarkButton from "./BookmarkButton";
 import LikeButton from "./LikeButton";
+import PostMoreButton from "./PostMoreButton";
 
 interface PostProps {
   post: PostData;
@@ -20,7 +21,7 @@ export default function Post({ post }: PostProps) {
   const { user } = useSession();
 
   return (
-    <article className="group/post p5 space-y-3 rounded-2xl bg-card shadow-sm">
+    <article className="group/post space-y-3 rounded-2xl bg-card p-5 shadow-sm">
       <div className="flex justify-between gap-3">
         <div className="flex flex-wrap gap-3">
           <UserTooltip user={post.user}>
@@ -54,21 +55,29 @@ export default function Post({ post }: PostProps) {
         )}
       </div>
       <Linkify>
-        <div className="whitespace-pre-line break-words px-5 pb-3">
-          {post.content}
-        </div>
+        <div className="whitespace-pre-line break-words">{post.content}</div>
       </Linkify>
       {!!post.attachments.length && (
         <MediaPreviews attachments={post.attachments} />
       )}
       <hr className="text-muted-foreground" />
-      <LikeButton
-        postId={post.id}
-        initialState={{
-          likes: post._count.likes,
-          isLikedByUser: post.likes.some((like) => like.userId === user.id),
-        }}
-      />
+      <div className="flex justify-between gap-5">
+        <LikeButton
+          postId={post.id}
+          initialState={{
+            likes: post._count.likes,
+            isLikedByUser: post.likes.some((like) => like.userId === user.id),
+          }}
+        />
+        <BookmarkButton
+          postId={post.id}
+          initialState={{
+            isBookmarkedByUser: post.bookmarks.some(
+              (bookmark) => bookmark.userId === user.id,
+            ),
+          }}
+        />
+      </div>
     </article>
   );
 }
@@ -101,13 +110,14 @@ function MediaPreview({ media }: MediaPreviewProps) {
     return (
       <Image
         src={media.url}
-        alt="attachment"
+        alt="Attachment"
         width={500}
         height={500}
         className="mx-auto size-fit max-h-[30rem] rounded-2xl"
       />
     );
   }
+
   if (media.type === "VIDEO") {
     return (
       <div>
