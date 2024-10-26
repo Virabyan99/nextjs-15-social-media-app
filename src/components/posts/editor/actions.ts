@@ -25,5 +25,5 @@ export async function submitPost(input: {
             },
             include: getPostDataInclude(user.id),
         });
-        return newPost;
+        return newPost
 }
