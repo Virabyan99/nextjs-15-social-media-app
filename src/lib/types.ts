@@ -131,3 +131,7 @@ export function getPostDataInclude(loggedInUserId: string) {
   export interface NotificationCountInfo {
     unreadCount: number;
   }
+
+  export interface MessageCountInfo {
+    unreadCount: number;
+  }
