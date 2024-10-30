@@ -10,10 +10,10 @@ export default function Linkify({ children }: LinkifyProps) {
   return (
     <LinkifyUsername>
       <LinkifyHashtag>
-        <LinkifyUrl>{children}</LinkifyUrl>;
+        <LinkifyUrl>{children}</LinkifyUrl>
       </LinkifyHashtag>
     </LinkifyUsername>
-  );
+  )
 }
 
 function LinkifyUrl({ children }: LinkifyProps) {
@@ -25,7 +25,7 @@ function LinkifyUrl({ children }: LinkifyProps) {
 function LinkifyUsername({ children }: LinkifyProps) {
   return (
     <LinkIt
-      regex={/(@[a-zA-Z0-9_-]+)/}
+    regex={/(#[a-zA-Z0-9]+)(?!;)/} 
       component={(match, key) => (
         <UserLinkWithTooltip key={key} username={match.slice(1)}>
           {match}
